@@ -73,7 +73,7 @@ export default function WorkoutCard({
       <article className="h-full overflow-hidden rounded-2xl border border-base-content/10 bg-base-100 transition-all duration-300 hover:-translate-y-1 hover:border-[#ccff00]/50 hover:shadow-[0_0_25px_rgba(204,255,0,0.08)]">
 
         {/* Workout Image */}
-        <div className="relative aspect-[4/3] overflow-hidden bg-[#202020]">
+        <div className="relative aspect-4/3 overflow-hidden bg-[#202020]">
 
           <Image
             src={app.image}
@@ -89,7 +89,7 @@ export default function WorkoutCard({
           </span>
 
           {/* Image Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
 
           {/* Muscle Group Tags */}
           <div className="absolute bottom-3 left-3 z-10 flex flex-wrap gap-2">
