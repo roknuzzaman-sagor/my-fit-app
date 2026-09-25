@@ -39,7 +39,7 @@ const Navbar = () => {
     <li>
       <Link
         href="/my-plan"
-        className="rounded-xl px-5 py-2.5 text-sm font-semibold"
+        className="rounded-xl px-5 py-2.5 text-sm font-bold"
       >
         My Plan
       </Link>
