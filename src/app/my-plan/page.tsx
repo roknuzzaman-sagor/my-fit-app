@@ -25,7 +25,7 @@ export default function MyPlan() {
   const workouts =
     activeTab === "plan" ? plan : saved;
 
-  // Metrics
+
   const totalMinutes = plan.reduce(
     (total, workout) =>
       total + workout.duration,
@@ -38,7 +38,7 @@ export default function MyPlan() {
     0
   );
 
-  // Remove workout
+  
   const handleRemove = (id: number) => {
     if (activeTab === "plan") {
       removeFromPlan(id);
@@ -49,7 +49,7 @@ export default function MyPlan() {
     toast.success("Workout removed");
   };
 
-  // Mark as done
+ 
   const handleDone = (id: number) => {
     markAsDone(id);
     toast.success("Workout completed");
@@ -59,11 +59,9 @@ export default function MyPlan() {
     <main className="min-h-screen bg-base-100 px-4 py-10 md:px-8 md:py-14">
       <div className="mx-auto max-w-7xl">
 
-        {/* Header */}
+       
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.25em] text-[#ccff00]">
-            YOUR TRAINING
-          </p>
+         
 
           <h1 className="mt-2 text-4xl font-extrabold uppercase md:text-5xl">
             MY PLAN
@@ -75,7 +73,7 @@ export default function MyPlan() {
           </p>
         </div>
 
-        {/* Metrics */}
+       
         <div className="mt-8 grid gap-4 sm:grid-cols-3">
 
           <div className="rounded-2xl border border-base-content/10 bg-base-200 p-5">
@@ -110,8 +108,8 @@ export default function MyPlan() {
 
         </div>
 
-        {/* Tabs */}
-        <div className="mt-10 flex gap-2 border-b border-base-content/10">
+        
+        <div className="mt-10 flex gap-2">
 
           <button
             onClick={() => setActiveTab("plan")}
@@ -137,12 +135,12 @@ export default function MyPlan() {
 
         </div>
 
-        {/* Workout List */}
+       
         <div className="mt-6 space-y-4">
 
           {workouts.length === 0 ? (
 
-            /* Empty State */
+            
             <div className="rounded-2xl border border-base-content/10 px-5 py-16 text-center">
 
               <h2 className="text-2xl font-extrabold uppercase">
@@ -172,7 +170,7 @@ export default function MyPlan() {
                 className="flex flex-col gap-5 rounded-2xl border border-base-content/10 bg-base-200 p-4 md:flex-row md:items-center"
               >
 
-                {/* Thumbnail */}
+              
                 <div className="relative h-40 w-full shrink-0 overflow-hidden rounded-xl md:h-28 md:w-40">
 
                   <Image
@@ -185,7 +183,7 @@ export default function MyPlan() {
 
                 </div>
 
-                {/* Information */}
+                
                 <div className="flex-1">
 
                   <h2 className="text-xl font-extrabold uppercase">
@@ -196,7 +194,7 @@ export default function MyPlan() {
                     {workout.equipment}
                   </p>
 
-                  {/* Stats */}
+                
                   <div className="mt-4 flex flex-wrap gap-5 text-sm">
 
                     <span>
@@ -215,7 +213,7 @@ export default function MyPlan() {
 
                 </div>
 
-                {/* Actions */}
+               
                 <div className="flex flex-wrap gap-2 md:flex-col">
 
                   <Link
