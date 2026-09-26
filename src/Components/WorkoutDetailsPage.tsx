@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 
 import type { IApp } from "@/Type/Type";
 import { useWorkout } from "@/Context/WorkoutContext";
+
 import { toast } from "react-toastify";
 
 interface WorkoutDetailsProps {
@@ -28,50 +29,52 @@ function SpecRow({ label, value }: { label: string; value: string | number }) {
 export default function WorkoutDetails({ workout }: WorkoutDetailsProps) {
   const { addToPlan, saveWorkout, plan, saved } = useWorkout();
 
-  const mounted = useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false,
-  );
+  const [mounted, setMounted] = useState(false);
 
-  const alreadyInPlan = mounted
-    ? plan.some((item) => item.id === workout.id)
-    : false;
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
-  const alreadySaved = mounted
-    ? saved.some((item) => item.id === workout.id)
-    : false;
+  const alreadyInPlan = mounted && plan.some((item) => item.id === workout.id);
+
+  const alreadySaved = mounted && saved.some((item) => item.id === workout.id);
 
   const handleAddToPlan = () => {
+    if (!mounted) {
+      return;
+    }
+
     if (alreadyInPlan) {
       toast.info("Already in today's plan");
       return;
     }
 
-    if (plan.length >= 5) {
-      toast.error("Today's plan is full");
-      return;
-    }
-
     addToPlan(workout);
+
     toast.success("Added to today's plan");
   };
 
   const handleSave = () => {
+    if (!mounted) {
+      return;
+    }
+
     if (alreadySaved) {
       toast.info("Already saved");
       return;
     }
 
     saveWorkout(workout);
+
     toast.success("Saved for later");
   };
 
   return (
     <section className="bg-base-100 px-4 py-10 md:px-8 md:py-14">
       <div className="mx-auto max-w-7xl">
-        <div className="grid overflow-hidden rounded-3xl border border-base-content/10 lg:grid-cols-2">
-          <div className="relative min-h-100 bg-base-200 lg:min-h-150">
+        <div className="grid overflow-hidden rounded-3xl border border-base-content/10 bg-base-200 lg:grid-cols-2">
+          <div className="relative min-h-100 lg:min-h-150">
             <Image
               src={workout.image}
               alt={workout.name}
@@ -84,17 +87,6 @@ export default function WorkoutDetails({ workout }: WorkoutDetailsProps) {
             <span className="absolute right-4 top-4 rounded-full bg-black/70 px-3 py-1 text-xs font-bold uppercase text-white">
               {workout.difficulty}
             </span>
-
-            <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
-              {workout.muscleGroups.map((muscle) => (
-                <span
-                  key={muscle}
-                  className="rounded-md bg-[#ccff00] px-3 py-1 text-xs font-bold uppercase text-black"
-                >
-                  {muscle}
-                </span>
-              ))}
-            </div>
           </div>
 
           <div className="p-6 md:p-8">
@@ -105,6 +97,17 @@ export default function WorkoutDetails({ workout }: WorkoutDetailsProps) {
             <h1 className="mt-3 text-3xl font-extrabold uppercase text-base-content md:text-4xl">
               {workout.name}
             </h1>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              {workout.muscleGroups.map((muscle) => (
+                <span
+                  key={muscle}
+                  className="rounded-md bg-[#ccff00] px-3 py-1 text-xs font-bold uppercase text-black"
+                >
+                  {muscle}
+                </span>
+              ))}
+            </div>
 
             <p className="mt-4 text-sm leading-6 text-base-content/60">
               {workout.description}
@@ -156,17 +159,27 @@ export default function WorkoutDetails({ workout }: WorkoutDetailsProps) {
               <button
                 type="button"
                 onClick={handleAddToPlan}
-                className="flex-1 rounded-xl bg-[#ccff00] px-4 py-3 text-sm font-bold text-black hover:bg-[#d5ff33]"
+                disabled={!mounted}
+                className="flex-1 rounded-xl bg-[#ccff00] px-4 py-3 text-sm font-bold text-black transition hover:bg-[#d5ff33] disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {alreadyInPlan ? "✓ Already in plan" : "+ Add to today's plan"}
+                {!mounted
+                  ? "Loading..."
+                  : alreadyInPlan
+                    ? "✓ Already in plan"
+                    : "+ Add to today's plan"}
               </button>
 
               <button
                 type="button"
                 onClick={handleSave}
-                className="flex-1 rounded-xl border border-base-content/15 px-4 py-3 text-sm font-bold hover:border-[#ccff00]/50 hover:text-[#ccff00]"
+                disabled={!mounted}
+                className="flex-1 rounded-xl border border-base-content/15 px-4 py-3 text-sm font-bold transition hover:border-[#ccff00]/50 hover:text-[#ccff00] disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {alreadySaved ? "♥ Saved" : "♡ Save for later"}
+                {!mounted
+                  ? "Loading..."
+                  : alreadySaved
+                    ? "♥ Saved"
+                    : "♡ Save for later"}
               </button>
             </div>
           </div>

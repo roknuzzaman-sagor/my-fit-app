@@ -18,6 +18,7 @@ async function getWorkouts(): Promise<IApp[]> {
     return data;
   } catch (error) {
     console.error("Failed to fetch workouts:", error);
+
     return [];
   }
 }
@@ -28,6 +29,7 @@ export default async function Home() {
   return (
     <div>
       <Banner />
+
       <WorkoutLibrary apps={apps} />
     </div>
   );

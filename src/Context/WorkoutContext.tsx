@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
+
 import type { IApp } from "@/Type/Type";
 
 interface WorkoutContextType {
@@ -9,8 +10,10 @@ interface WorkoutContextType {
 
   addToPlan: (workout: IApp) => void;
   saveWorkout: (workout: IApp) => void;
+
   removeFromPlan: (id: number) => void;
   removeFromSaved: (id: number) => void;
+
   markAsDone: (id: number) => void;
 }
 
@@ -19,37 +22,33 @@ const WorkoutContext = createContext<WorkoutContextType | undefined>(undefined);
 export function WorkoutProvider({ children }: { children: React.ReactNode }) {
   const [plan, setPlan] = useState<IApp[]>(() => {
     if (typeof window === "undefined") return [];
-    const savedPlan = localStorage.getItem("fitlog-plan");
-    return savedPlan ? JSON.parse(savedPlan) : [];
+    const storedPlan = window.localStorage.getItem("fitlog-plan");
+    return storedPlan ? JSON.parse(storedPlan) : [];
   });
   const [saved, setSaved] = useState<IApp[]>(() => {
     if (typeof window === "undefined") return [];
-    const savedWorkouts = localStorage.getItem("fitlog-saved");
-    return savedWorkouts ? JSON.parse(savedWorkouts) : [];
+    const storedSaved = window.localStorage.getItem("fitlog-saved");
+    return storedSaved ? JSON.parse(storedSaved) : [];
   });
 
+  // Save plan to localStorage
   useEffect(() => {
     localStorage.setItem("fitlog-plan", JSON.stringify(plan));
   }, [plan]);
 
+  // Save saved workouts to localStorage
   useEffect(() => {
     localStorage.setItem("fitlog-saved", JSON.stringify(saved));
   }, [saved]);
 
   const addToPlan = (workout: IApp) => {
-    if (plan.length >= 5) {
-      return;
-    }
-
     const alreadyAdded = plan.some((item) => item.id === workout.id);
 
     if (alreadyAdded) {
       return;
     }
 
-    const newPlan = [...plan, workout];
-
-    setPlan(newPlan);
+    setPlan((previousPlan) => [...previousPlan, workout]);
   };
 
   const saveWorkout = (workout: IApp) => {
@@ -59,27 +58,19 @@ export function WorkoutProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const newSaved = [...saved, workout];
-
-    setSaved(newSaved);
+    setSaved((previousSaved) => [...previousSaved, workout]);
   };
 
   const removeFromPlan = (id: number) => {
-    const newPlan = plan.filter((item) => item.id !== id);
-
-    setPlan(newPlan);
+    setPlan((previousPlan) => previousPlan.filter((item) => item.id !== id));
   };
 
   const removeFromSaved = (id: number) => {
-    const newSaved = saved.filter((item) => item.id !== id);
-
-    setSaved(newSaved);
+    setSaved((previousSaved) => previousSaved.filter((item) => item.id !== id));
   };
 
   const markAsDone = (id: number) => {
-    const newPlan = plan.filter((item) => item.id !== id);
-
-    setPlan(newPlan);
+    setPlan((previousPlan) => previousPlan.filter((item) => item.id !== id));
   };
 
   return (
