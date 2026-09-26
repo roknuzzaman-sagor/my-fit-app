@@ -10,11 +10,7 @@ interface IconProps {
   className?: string;
 }
 
-function Icon({
-  name,
-  size = 20,
-  className = "",
-}: IconProps) {
+function Icon({ name, size = 20, className = "" }: IconProps) {
   const paths = {
     clock: (
       <>
@@ -61,9 +57,7 @@ interface WorkoutCardProps {
   app: IApp;
 }
 
-export default function WorkoutCard({
-  app,
-}: WorkoutCardProps) {
+export default function WorkoutCard({ app }: WorkoutCardProps) {
   return (
     <Link
       href={`/workout/${app.id}`}
@@ -71,10 +65,7 @@ export default function WorkoutCard({
       aria-label={`View details for ${app.name}`}
     >
       <article className="h-full overflow-hidden rounded-2xl border border-base-content/10 bg-base-100 transition-all duration-300 hover:-translate-y-1 hover:border-[#ccff00]/50 hover:shadow-[0_0_25px_rgba(204,255,0,0.08)]">
-
-        {/* Workout Image */}
         <div className="relative aspect-4/3 overflow-hidden bg-[#202020]">
-
           <Image
             src={app.image}
             alt={app.name}
@@ -83,15 +74,12 @@ export default function WorkoutCard({
             className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
 
-          {/* Difficulty Badge */}
           <span className="absolute right-3 top-3 z-10 rounded-full border border-white/15 bg-black/70 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white backdrop-blur-sm">
             {app.difficulty}
           </span>
 
-          {/* Image Overlay */}
           <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
 
-          {/* Muscle Group Tags */}
           <div className="absolute bottom-3 left-3 z-10 flex flex-wrap gap-2">
             {app.muscleGroups.map((muscle) => (
               <span
@@ -104,10 +92,7 @@ export default function WorkoutCard({
           </div>
         </div>
 
-        {/* Workout Information */}
         <div className="p-5">
-
-          {/* Title + Arrow */}
           <div className="flex items-start justify-between gap-3">
             <h2 className="text-lg font-extrabold uppercase leading-tight tracking-wide text-white transition-colors group-hover:text-[#ccff00]">
               {app.name}
@@ -120,25 +105,16 @@ export default function WorkoutCard({
             />
           </div>
 
-          {/* Equipment */}
           <p className="mt-3 line-clamp-1 text-sm text-gray-400">
             <span className="mr-2 text-[#ccff00]">↳</span>
             {app.equipment}
           </p>
 
-          {/* Divider */}
           <div className="my-4 border-t border-white/10" />
 
-          {/* Workout Stats */}
           <div className="grid grid-cols-3 gap-2">
-
-            {/* Duration */}
             <div className="flex flex-col gap-2">
-              <Icon
-                name="clock"
-                size={17}
-                className="text-[#ccff00]"
-              />
+              <Icon name="clock" size={17} className="text-[#ccff00]" />
 
               <span className="text-sm font-semibold text-white">
                 {app.duration} min
@@ -149,13 +125,8 @@ export default function WorkoutCard({
               </span>
             </div>
 
-            {/* Calories */}
             <div className="flex flex-col gap-2">
-              <Icon
-                name="flame"
-                size={17}
-                className="text-[#ccff00]"
-              />
+              <Icon name="flame" size={17} className="text-[#ccff00]" />
 
               <span className="text-sm font-semibold text-white">
                 {app.caloriesBurned} kcal
@@ -166,13 +137,8 @@ export default function WorkoutCard({
               </span>
             </div>
 
-            {/* Rating */}
             <div className="flex flex-col gap-2">
-              <Icon
-                name="star"
-                size={17}
-                className="text-[#ccff00]"
-              />
+              <Icon name="star" size={17} className="text-[#ccff00]" />
 
               <span className="text-sm font-semibold text-white">
                 {app.rating.toFixed(1)}
@@ -182,7 +148,6 @@ export default function WorkoutCard({
                 Rating
               </span>
             </div>
-
           </div>
         </div>
       </article>
