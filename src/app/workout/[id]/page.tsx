@@ -7,14 +7,27 @@ interface WorkoutDetailsPageProps {
   }>;
 }
 
-async function getWorkout(id: string): Promise<IApp> {
-  const response = await fetch(`https://api.abcz.workers.dev/api/fitlog/${id}`);
+async function getWorkout(id: string): Promise<IApp | null> {
+  try {
+    const response = await fetch(
+      `https://api.abcz.workers.dev/api/fitlog/${id}`,
+      {
+        cache: "no-store",
+      },
+    );
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch workout");
+    if (!response.ok) {
+      console.error("API error:", response.status);
+      return null;
+    }
+
+    const data: IApp = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Failed to fetch workout:", error);
+    return null;
   }
-
-  return response.json();
 }
 
 export default async function WorkoutDetailsPage({
@@ -23,6 +36,14 @@ export default async function WorkoutDetailsPage({
   const { id } = await params;
 
   const workout = await getWorkout(id);
+
+  if (!workout) {
+    return (
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <h1 className="text-2xl font-bold">Workout not found</h1>
+      </div>
+    );
+  }
 
   return <WorkoutDetails workout={workout} />;
 }

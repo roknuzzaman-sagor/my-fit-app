@@ -18,7 +18,6 @@ async function getWorkouts(): Promise<IApp[]> {
     return data;
   } catch (error) {
     console.error("Failed to fetch workouts:", error);
-
     return [];
   }
 }

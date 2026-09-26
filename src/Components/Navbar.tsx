@@ -43,8 +43,8 @@ const Navbar = () => {
         <ul className="hidden items-center gap-2 md:flex">
           <li>
             <Link
-              href="/#library"
-              className="rounded-xl px-5 py-2.5 text-sm font-bold text-[#c2f800]"
+              href="/"
+              className="rounded-xl px-5 py-2.5 text-sm font-bold hover:text-lime-300"
             >
               Workouts
             </Link>
@@ -53,7 +53,7 @@ const Navbar = () => {
           <li>
             <Link
               href="/my-plan"
-              className="rounded-xl px-5 py-2.5 text-sm font-bold"
+              className="rounded-xl px-5 py-2.5 text-sm font-bold hover:text-lime-300"
             >
               My Plan
             </Link>
